@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eco-Charger Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #e0f7e0;
+            color: #2c5e2e;
+        }
+        header {
+            background: #2c5e2e;
+            color: white;
+            padding: 15px;
+            font-size: 24px;
+        }
+        .container {
+            margin: 20px auto;
+            width: 50%;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px #888;
+        }
+        .data {
+            font-size: 20px;
+            margin: 15px 0;
+        }
+        .btn {
+            background: #2c5e2e;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+            border-radius: 5px;
+        }
+        .btn:hover {
+            background: #1e3d1e;
+        }
+        .icons {
+            font-size: 30px;
+            margin: 10px;
+        }
+    </style>
+</head>
+<body>
+    <header>Eco-Charger: Harnessing Solar & Wind Power</header>
+    <div class="container">
+        <h2>Real-Time Voltage Monitoring</h2>
+        <p class="data"><span class="icons">☀️</span> Solar Panel Voltage: <span id="solarVoltage">0</span>V</p>
+        <p class="data"><span class="icons">🌬️</span> Wind Turbine Voltage: <span id="windVoltage">0</span>V</p>
+        <p class="data"><span class="icons">🔋</span> Battery Voltage: <span id="batteryVoltage">0</span>V</p>
+        <p class="data"><span class="icons">⚡</span> Charging Status: <span id="sufficiency">Checking...</span></p>
+        <button class="btn" onclick="fetchData()">Check Voltage</button>
+    </div>
+    <script>
+        function fetchData() {
+            fetch('/getData')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById("solarVoltage").innerText = data.solarVoltage;
+                    document.getElementById("windVoltage").innerText = data.windVoltage;
+                    document.getElementById("batteryVoltage").innerText = data.batteryVoltage;
+                    document.getElementById("sufficiency").innerText = (data.batteryVoltage >= 3.7) ? "Sufficient" : "Insufficient";
+                })
+                .catch(error => console.error('Error fetching data:', error));
+        }
+    </script>
+</body>
+</html>
